@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { decode } from "jsonwebtoken";
 import { getCustomRepository } from "typeorm";
-import  {UserRepository } from "../repositories/UserRepository";
-import { User } from "../models/User";
+import {UserRepository} from "../repositories/UserRepository";
+import {User} from "../models/User";
 
 async function decoder(request: Request): Promise<User | undefined> {
   const authHeader = request.headers.authorization || "";
@@ -11,8 +11,9 @@ async function decoder(request: Request): Promise<User | undefined> {
   const [, token] = authHeader?.split(" ");
 
   const payload = decode(token);
+
 //"2dd4c530-dcb5-470f-b2cd-9784951caee5"
-  const user = await userRepository.findOne(payload?.sub, {
+  const user = await userRepository.findOne(String(payload?.sub), {
       relations: ["roles"],
     });
 
